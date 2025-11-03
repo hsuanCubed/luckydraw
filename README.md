@@ -8,7 +8,7 @@
 [Demo 影片](https://www.youtube.com/watch?v=Vp7fli021d8)
 
 
-> 考特於 2025 年 1 月中收到神秘協助請求，於是以最小變動幅度為原則，讓此抽獎服務能夠再次偉大。
+> Based on Lucky Draw, use nativefier create a native desktop application
 
 ## 目錄
 1. [測試環境](#測試環境)
@@ -80,7 +80,19 @@ serve . -l 8080
 
 應用程式將會在 [http://localhost:8080](http://localhost:8080) 提供服務。
 
+## nativefier
+安裝 Nativefier：
 
+```bash
+npm install -g nativefier
+```
+
+## 產生成單機版應用
+執行生成Desktop application：
+
+```bash
+nativefier "D:\path\to\project\index.html" --name "OfflineLuckyDraw" --icon "D:\path\to\project\favicon.ico" --disable-context-menu --internal-urls ".*" --enable-node-integration
+```
 
 # 使用 Docker 運行
 
