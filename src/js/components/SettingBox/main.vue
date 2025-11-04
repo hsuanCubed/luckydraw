@@ -11,20 +11,6 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>喝杯咖啡清神下</h4>
-                            </div>
-                            <div class="col-12">
-                                <a href="https://medium.com/@fantasticsie" target="_blank" @click="donateAct">
-                                    <div class="donate-image"
-                                        style="position: relative; width: 100%; padding-bottom: 56.25%; overflow: hidden;">
-                                        <img :src="randomImageSrc" alt="Random Image"
-                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;">
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label for="webTitle">網站標題</label>
                             <input v-model="input.webTitle" type="text" class="form-control" name="webTitle"

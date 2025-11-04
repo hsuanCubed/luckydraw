@@ -1,0 +1,27 @@
+
+textarea{
+    min-height: calc(100vh - 300px);
+}
+
+
+.candidate-wrapper[data-v-54e63bf2]{
+    margin: 10px auto; /* Match the margin style */
+}
+
+
+.modal-body[data-v-2f17a3d3]{
+    height: calc( 100vh - 200px);
+    overflow: auto;
+}
+
+
+.show-blcok[data-v-0f910f44]{
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+}
+
+
+/*# sourceMappingURL=index2.css.map*/
