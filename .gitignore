@@ -4,4 +4,4 @@ package-lock.json
 composer.lock
 /config/config.php
 .DS_Store
-/dist
+/OfflineLuckyDraw-win32-x64
