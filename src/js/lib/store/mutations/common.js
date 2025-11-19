@@ -254,8 +254,8 @@ export default {
         state.candidateList = [];
         state.candidateList_sort = [];
         state.prizeList = [];
-        state.focusCandidateSN = null;
-        state.focusPrizeSN = null;
+        state.focusCandidateSN = []; // 必須是空陣列
+        state.focusPrizeSN = null; // 這個可以保持 null/false
 
         this.commit('formatHaveAwardCandidateSN');
     },
@@ -391,7 +391,7 @@ export default {
         // 確保 state.focusCandidateSN 始終是一個陣列，以利後續處理
         if (Array.isArray(payload)) {
             state.focusCandidateSN = payload;
-        } else if (payload === null) {
+        } else if (payload === null || payload === false) {
             state.focusCandidateSN = [];
         } else {
             // 如果傳入單個值，也將其包裝成陣列
