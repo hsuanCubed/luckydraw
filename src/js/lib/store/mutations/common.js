@@ -1,17 +1,17 @@
 import { localStorage, popup, string, trackJS } from 'lib/common/util';
 
 export default {
-    setFavicon(state, key){
+    setFavicon(state, key) {
         document.querySelector('link[type="image/x-icon"]').setAttribute('href', state.favicon[key]);
     },
 
-    CheckAdBlock(state, data){
+    CheckAdBlock(state, data) {
         state.adBlocked = data;
     },
     /**
      * 系統初始化
      */
-    initSystem(state, params){
+    initSystem(state, params) {
         const luckyDrawSetting = localStorage.get('luckyDrawSetting', false);
         const luckyDrawStorage = localStorage.get('luckyDrawStorage', {});
         const luckyDrawKeyList = Object.keys(luckyDrawStorage);
@@ -29,7 +29,7 @@ export default {
     /**
      * 舊結構轉成新結構
      */
-    upgradeLuckyDrawData(state){
+    upgradeLuckyDrawData(state) {
         const params = localStorage.get('luckyDrawSetting', false);
         const defaultConfig = JSON.parse(JSON.stringify(state.defaultConfig));
         const { config, prizeList, shortlist, shortlist_sort } = params;
@@ -109,7 +109,7 @@ export default {
     /**
      * 建立舊資料選單
      */
-    setLuckyDrawChooseList(state){
+    setLuckyDrawChooseList(state) {
         const luckyDrawStorage = localStorage.get('luckyDrawStorage', {});
         const luckyDrawChooseList = [];
         Object.keys(luckyDrawStorage).forEach((key) => {
@@ -124,7 +124,7 @@ export default {
     /**
      * 建立一筆預設抽獎活動
      */
-    createDefaultLuckyDraw(state, params){
+    createDefaultLuckyDraw(state, params) {
         trackJS.mixpanel('createDefaultLuckyDraw_trigger', params);
         const luckyDrawFocusKey = string.getRandomString(20);
 
@@ -149,7 +149,7 @@ export default {
     /**
      * 選擇抽獎活動
      */
-    chooseLuckDrawFromStorage(state, key){
+    chooseLuckDrawFromStorage(state, key) {
         const luckyDrawStorage = localStorage.get('luckyDrawStorage', {});
 
         if (luckyDrawStorage[key]) {
@@ -173,7 +173,7 @@ export default {
     /**
      * LocalStorage Listen 同步回 state
      */
-    listenLocalStorageChange(state, params){
+    listenLocalStorageChange(state, params) {
         const { luckyDrawFocusKey } = state;
         const luckyDrawStorage = localStorage.get('luckyDrawStorage', {});
         if (!!luckyDrawStorage[luckyDrawFocusKey] && 1) {
@@ -206,7 +206,7 @@ export default {
     /**
      * 刪除抽獎活動
      */
-    removeLuckDrawFromStorage(state, key){
+    removeLuckDrawFromStorage(state, key) {
         const luckyDrawStorage = localStorage.get('luckyDrawStorage', {});
         delete luckyDrawStorage[key];
         localStorage.set('luckyDrawStorage', luckyDrawStorage);
@@ -216,7 +216,7 @@ export default {
     /**
      * 儲存到 localStorage
      */
-    saveToLocalStorage(state){
+    saveToLocalStorage(state) {
         const luckyDrawStorage = localStorage.get('luckyDrawStorage', {});
         const { luckyDrawFocusKey, config, candidateList, candidateList_sort, prizeList } = state;
         luckyDrawStorage[luckyDrawFocusKey] = {
@@ -231,7 +231,7 @@ export default {
     /**
      * 設定列表
      */
-    setConfig(state, params){
+    setConfig(state, params) {
         let config = JSON.parse(JSON.stringify(state.config));
         config = { ...config, ...params.config };
         state.config = config;
@@ -240,7 +240,7 @@ export default {
     /**
      * 清除此抽獎活動所有資訊
      */
-    clearAllData(state, params){
+    clearAllData(state, params) {
         const defaultConfig = JSON.parse(JSON.stringify(state.defaultConfig));
         state.config = {
             ...defaultConfig,
@@ -263,7 +263,7 @@ export default {
     /**
      * 開啟 Modal
      */
-    triggerModal(state, params){
+    triggerModal(state, params) {
         const { key } = params;
         const triggerKey = `triggerOpen${key}`;
         if (typeof state[triggerKey] !== 'undefined') {
@@ -279,7 +279,7 @@ export default {
     /**
      * 儲存候選人列表
      */
-    setCandidateListInput(state, params){
+    setCandidateListInput(state, params) {
         const { candidateListInput } = params;
         let candidateList = JSON.parse(JSON.stringify(state.candidateList));
         let candidateList_sort = JSON.parse(JSON.stringify(state.candidateList_sort));
@@ -340,7 +340,7 @@ export default {
     /**
      * 建立亂數候選人
      */
-    setCandidateListRandomSort(state, params){
+    setCandidateListRandomSort(state, params) {
         const candidateList = JSON.parse(JSON.stringify(state.candidateList));
         const candidateListSN = candidateList.filter(data => !data.del).map(data => data.sn);
 
@@ -359,7 +359,7 @@ export default {
     /**
      * 設定候選人資訊
      */
-    setCandidateInfo(state, params){
+    setCandidateInfo(state, params) {
         const candidateList = JSON.parse(JSON.stringify(state.candidateList));
         let index = false;
         candidateList.forEach((candidateInfo, candidateIndex) => {
@@ -380,28 +380,36 @@ export default {
     /**
      * 同步禮物資訊
      */
-    syncPrizeList(state, params){
+    syncPrizeList(state, params) {
         state.prizeList = JSON.parse(JSON.stringify(params));
     },
 
     /**
      * 設定 focus 候選人 SN
      */
-    setFocusCandidateSN(state, params){
-        state.focusCandidateSN = params;
+    setFocusCandidateSN(state, payload) {
+        // 確保 state.focusCandidateSN 始終是一個陣列，以利後續處理
+        if (Array.isArray(payload)) {
+            state.focusCandidateSN = payload;
+        } else if (payload === null) {
+            state.focusCandidateSN = [];
+        } else {
+            // 如果傳入單個值，也將其包裝成陣列
+            state.focusCandidateSN = [payload];
+        }
     },
 
     /**
      * 設定 focus 獎項 SN
      */
-    setFocusPrizeSN(state, params){
+    setFocusPrizeSN(state, params) {
         state.focusPrizeSN = params;
     },
 
     /**
      * 更新中獎名單
      */
-    formatHaveAwardCandidateSN(state){
+    formatHaveAwardCandidateSN(state) {
         const ValidatePrizeSN = [];
         const haveAwardCandidateSN = [];
 
@@ -431,22 +439,42 @@ export default {
     /**
      * 綁定獎項與候選人
      */
-    setFocusCandidateBindPrize(state, params){
+    setFocusCandidateBindPrize(state, params) {
         const candidateList = JSON.parse(JSON.stringify(state.candidateList));
-        const { prize_sn, candidate_sn } = params;
-        let focusIndex = false;
-        candidateList.forEach((item, index) => {
-            if (candidate_sn === item.sn) {
-                focusIndex = index;
+        const prizeList = JSON.parse(JSON.stringify(state.prizeList));
+
+        // 【接收 SN 陣列】
+        const { prize_sn, candidate_sn_list } = params;
+
+        // 確保 candidate_sn_list 是陣列
+        const winnerSNList = Array.isArray(candidate_sn_list) ? candidate_sn_list : [candidate_sn_list];
+
+        if (winnerSNList.length === 0 || !prize_sn) {
+            return; // 沒有中獎者或獎項 SN，直接返回
+        }
+
+        // 【迴圈更新所有中獎者】
+        winnerSNList.forEach((sn) => {
+            const focusIndex = candidateList.findIndex(item => item.sn === sn);
+
+            if (focusIndex !== -1) {
+                // 將獎項 SN 添加到該中獎者的 award 陣列中
+                if (!candidateList[focusIndex].award.includes(prize_sn)) {
+                    candidateList[focusIndex].award.push(prize_sn);
+                }
             }
         });
 
-        if (focusIndex !== false) {
-            candidateList[focusIndex].award.push(prize_sn);
-        }
+        // 【更新獎項已發放數量 (prizeList count)】
+        // 在 GetLuckyBox/main.vue 中是透過 prizeInfo.count 來追蹤已中獎人數，
+        // 但為了數據的完整性 (例如：清空所有中獎名單後，prizeList 的 count 要能重建)，
+        // 這裡不需要直接修改 prizeList 的 count，而是依賴 formatHaveAwardCandidateSN 重新計算。
+        // formatHaveAwardCandidateSN 會自動計算出所有已中獎的 SN。
 
+        // 重置 focus 狀態
         state.focusPrizeSN = false;
-        state.focusCandidateSN = false;
+        state.focusCandidateSN = []; // 應改為空陣列
+
         state.candidateList = candidateList;
         this.commit('formatHaveAwardCandidateSN');
     },
@@ -454,7 +482,7 @@ export default {
     /**
      * 隨機建立抽獎資訊
      */
-    createRandomLuckyDraw(state){
+    createRandomLuckyDraw(state) {
         const randomCandidateNames = state.randomCandidateNames.split(',');
         const randomCandidatePos = state.randomCandidatePos.split(',');
         const randomPrize = state.randomPrize.split(',');
@@ -544,7 +572,7 @@ export default {
     },
 
 
-    setIsTutorial(state, bool){
+    setIsTutorial(state, bool) {
         state.isTutorial = !!bool;
     },
 };

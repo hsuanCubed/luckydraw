@@ -34,7 +34,12 @@
                                             class="form-control" placeholder="編輯獎項名稱"
                                         >
                                         <input v-model.number="editPrizeInfo.amount" type="number"
-                                            class="form-control" placeholder="數量"
+                                            class="form-control" placeholder="總數量"
+                                            min="1"
+                                            step="1"
+                                        >
+                                        <input v-model.number="editPrizeInfo.drawCount" type="number"
+                                            class="form-control" placeholder="每次抽幾人"
                                             min="1"
                                             step="1"
                                         >
@@ -51,7 +56,7 @@
                                             </span>
                                         </div>
                                         <div class="form-control">
-                                            {{ prizeInfo.title }} ({{ prizeInfo.amount }})
+                                            {{ prizeInfo.title }} (總{{ prizeInfo.amount }}名 / 每次{{ prizeInfo.drawCount || 1 }}人)
                                         </div>
                                         <div class="input-group-append">
                                             <span class="input-group-text" style="cursor: pointer" @click="openEditPrize(prizeInfo)">
@@ -89,7 +94,14 @@
                             <input v-model.number="newPrize.amount"
                                 name="amount"
                                 type="number"
-                                class="form-control" placeholder="數量"
+                                class="form-control" placeholder="總數量"
+                                min="1"
+                                step="1"
+                            >
+                            <input v-model.number="newPrize.drawCount"
+                                name="drawCount"
+                                type="number"
+                                class="form-control" placeholder="每次抽幾人"
                                 min="1"
                                 step="1"
                             >
@@ -123,6 +135,7 @@ export default {
             newPrize: {
                 title: '',
                 amount: 1,
+                drawCount: 1,
             },
             inputPrizeList: [],
             editPrizeInfo: null,
@@ -177,6 +190,7 @@ export default {
             that.newPrize = {
                 title: '',
                 amount: 1,
+                drawCount: 1,
             };
 
             if (that.inputPrizeList.length === 0) {
@@ -211,6 +225,7 @@ export default {
             that.newPrize = {
                 title: '',
                 amount: 1,
+                drawCount: 1,
             };
             that.addNewFlag = true;
         },
@@ -225,6 +240,7 @@ export default {
                         prize_sn: string.getRandomString(10),
                         title: '獎勵',
                         amount: 1,
+                        drawCount: 1,
                         del: false,
                         ...that.newPrize,
                     };
