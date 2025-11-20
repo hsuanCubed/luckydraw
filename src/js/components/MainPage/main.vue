@@ -3,49 +3,45 @@
         <header-bar></header-bar>
 
         <main style="padding: 0px 10px">
-            <div v-if="candidateList.length > 0"
-                class="shortlist-box"
-            >
-                <transition-group name="shortlist" class="shortlist" tag="div"
-                    enter-active-class="fadeInUp" leave-active-class="fadeOutDown"
-                >
-                    <candidate-box
-                        v-for="(candidateInfo, candidateIndex) in candidateListBySort"
-                        :key="candidateInfo.sn"
-                        :candidate-index="candidateIndex"
-                        :candidate-info="candidateInfo"
-                    ></candidate-box>
-                </transition-group>
-            </div>
-            <template v-else>
-                <div class="shortlist-empty-box">
-                    <div class="shortlist-empty-info text-left">
-                        <p>
-                            尚未建立抽獎名單 <br>
-                            您可以：
-                        </p>
-                        <ol>
-                            <li class="mb-2">
-                                <a href="javascript:;" @click="editCandidateList">輸入抽獎名單</a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:;" @click="triggerTutorial">觀看教學導覽</a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:;" @click="createRandomLuckyDrawAct">隨機建立範例測試</a>
-                            </li>
-                        </ol>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-9 mx-auto mt-3">
+                    <div v-if="candidateList.length > 0" class="shortlist-box">
+                        <transition-group name="shortlist" class="shortlist" tag="div" enter-active-class="fadeInUp"
+                            leave-active-class="fadeOutDown">
+                            <candidate-box v-for="(candidateInfo, candidateIndex) in candidateListBySort"
+                                :key="candidateInfo.sn" :candidate-index="candidateIndex"
+                                :candidate-info="candidateInfo"></candidate-box>
+                        </transition-group>
                     </div>
+                    <template v-else>
+                        <div class="shortlist-empty-box">
+                            <div class="shortlist-empty-info text-left">
+                                <p>
+                                    尚未建立抽獎名單 <br>
+                                    您可以：
+                                </p>
+                                <ol>
+                                    <li class="mb-2">
+                                        <a href="javascript:;" @click="editCandidateList">輸入抽獎名單</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <a href="javascript:;" @click="triggerTutorial">觀看教學導覽</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <a href="javascript:;" @click="createRandomLuckyDrawAct">隨機建立範例測試</a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </template>
                 </div>
-            </template>
+            </div>
         </main>
 
-        <div v-if="config.backgroundImg" class="bg-img"
-            :style="{
-                'background-image': 'url(' + config.backgroundImg + ')',
-                opacity: config.backgroundOpacity,
-            }"
-        ></div>
+        <div v-if="config.backgroundImg" class="bg-img" :style="{
+            'background-image': 'url(' + config.backgroundImg + ')',
+            opacity: config.backgroundOpacity,
+        }"></div>
 
 
         <lucky-draw-storage-box></lucky-draw-storage-box>
@@ -71,7 +67,7 @@ export default {
     },
     filters: {},
     props: {},
-    data(){
+    data() {
         return {};
     },
     computed: {
@@ -95,59 +91,59 @@ export default {
     watch: {
         config: {
             deep: true,
-            handler(){
+            handler() {
                 const that = this;
                 that.saveToLocalStorageAct();
             },
         },
         candidateList: {
             deep: true,
-            handler(val, oldVal){
+            handler(val, oldVal) {
                 const that = this;
                 that.saveToLocalStorageAct();
             },
         },
         candidateList_sort: {
             deep: true,
-            handler(val, oldVal){
+            handler(val, oldVal) {
                 const that = this;
                 that.saveToLocalStorageAct();
             },
         },
         candidateListInput: {
             deep: true,
-            handler(val, oldVal){
+            handler(val, oldVal) {
                 const that = this;
                 that.saveToLocalStorageAct();
             },
         },
         prizeList: {
             deep: true,
-            handler(val, oldVal){
+            handler(val, oldVal) {
                 const that = this;
                 that.saveToLocalStorageAct();
             },
         },
         luckyDrawFocusKey: {
             deep: true,
-            handler(){
+            handler() {
                 // this.triggerTutorial();
             },
         },
         luckyDrawIsRandom: {
             deep: true,
-            handler(){
+            handler() {
                 this.triggerRandomTutorial();
             },
         },
     },
-    created(){},
-    mounted(){
+    created() { },
+    mounted() {
         const that = this;
         that.init();
     },
-    updated(){},
-    destroyed(){},
+    updated() { },
+    destroyed() { },
     methods: {
         ...mapActions({}),
         ...mapMutations({
@@ -162,7 +158,7 @@ export default {
 
             setIsTutorial: 'setIsTutorial',
         }),
-        init(){
+        init() {
             const that = this;
             that.setFavicon('default');
             trackJS.mixpanel('LuckyDraw_view', {});
@@ -181,18 +177,18 @@ export default {
                 that.CheckAdBlock(detected);
             });
         },
-        saveToLocalStorageAct(){
+        saveToLocalStorageAct() {
             const that = this;
             clearTimeout(that.saveToLocalStorageTimer);
             that.saveToLocalStorageTimer = setTimeout(() => {
                 that.saveToLocalStorage();
             }, 500);
         },
-        editCandidateList(){
+        editCandidateList() {
             const that = this;
             that.triggerModal({ key: 'CandidateList' });
         },
-        createRandomLuckyDrawAct(){
+        createRandomLuckyDrawAct() {
             const that = this;
             that.createRandomLuckyDraw();
             trackJS.mixpanel('LuckyDrawRandom_click', {
@@ -208,11 +204,11 @@ export default {
                 prizeList: JSON.parse(JSON.stringify(that.prizeList)),
             });
         },
-        gotoDemoVideo(){
+        gotoDemoVideo() {
             trackJS.mixpanel('LuckyDrawDemoVideo_click');
             trackJS.gtag('event', 'LuckyDrawDemoVideo_click');
         },
-        triggerRandomTutorial(){
+        triggerRandomTutorial() {
             const that = this;
             if (this.luckyDrawIsRandom) {
                 const config = {
@@ -220,17 +216,17 @@ export default {
                         top: 60,
                         bottom: 60,
                     },
-                    startCallback(){
+                    startCallback() {
                         that.setIsTutorial(true);
                         trackJS.mixpanel('TutorialStart_trigger', { type: 'RandomTutorial' });
                         trackJS.gtag('event', 'TutorialStart_trigger', { type: 'RandomTutorial' });
                     },
-                    closeCallback(){
+                    closeCallback() {
                         that.setIsTutorial(false);
                         trackJS.mixpanel('TutorialEnd_trigger', { type: 'RandomTutorial' });
                         trackJS.gtag('event', 'TutorialEnd_trigger', { type: 'RandomTutorial' });
                     },
-                    step_callback(node, IntroInfo){
+                    step_callback(node, IntroInfo) {
                         trackJS.mixpanel('TutorialStep_trigger', { type: 'RandomTutorial', index: IntroInfo.index });
                         trackJS.gtag('event', 'TutorialStep_trigger', { type: 'RandomTutorial', index: IntroInfo.index });
                     },
@@ -255,7 +251,7 @@ export default {
                         target: '.candidate-box[data-index="5"] .candidate-wrapper .candidate-pos',
                         title: '豐富他的資料',
                         intro: '雖然是非必要，但加上職稱感覺會更豐富',
-                        beforeAction(Element, TutorialNode, $next){
+                        beforeAction(Element, TutorialNode, $next) {
                             that.triggerModal({ key: 'Setting', close: true });
                             setTimeout(() => {
                                 $next();
@@ -266,13 +262,13 @@ export default {
                         target: '.nav-link[rel="setting"]',
                         title: '你可以有你的風格',
                         intro: '在設定裡面可以設定屬於你的風格，接下來跟你介紹可以做得多客製化',
-                        beforeAction(Element, TutorialNode, $next){
+                        beforeAction(Element, TutorialNode, $next) {
                             $('#navbarCollapse').addClass('show');
                             setTimeout(() => {
                                 $next();
                             }, 10);
                         },
-                        afterAction(Element, TutorialNode, $next){
+                        afterAction(Element, TutorialNode, $next) {
                             $('#navbarCollapse').removeClass('show');
                             setTimeout(() => {
                                 $next();
@@ -284,7 +280,7 @@ export default {
                         scrollTarget: '#SettingBox',
                         title: '候選區塊不滿意',
                         intro: '您可以在這邊設定區塊的寬高與間距',
-                        beforeAction(Element, TutorialNode, $next){
+                        beforeAction(Element, TutorialNode, $next) {
                             that.triggerModal({ key: 'Setting' });
                             setTimeout(() => {
                                 document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -297,7 +293,7 @@ export default {
                         scrollTarget: '#SettingBox',
                         title: '字太小嗎？',
                         intro: '人名與職稱都是文字大小都可以改',
-                        beforeAction(Element, TutorialNode, $next){
+                        beforeAction(Element, TutorialNode, $next) {
                             // that.triggerModal({ key: 'Setting' });
                             setTimeout(() => {
                                 document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -310,7 +306,7 @@ export default {
                         scrollTarget: '#SettingBox',
                         title: '顏色太醜',
                         intro: '區塊總共有三種狀態，每種狀態都有自己的顏色，當然您可以自由設定',
-                        beforeAction(Element, TutorialNode, $next){
+                        beforeAction(Element, TutorialNode, $next) {
                             // that.triggerModal({ key: 'Setting' });
                             setTimeout(() => {
                                 document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -323,7 +319,7 @@ export default {
                         scrollTarget: '#SettingBox',
                         title: '玩夠了？',
                         intro: '如果你玩夠了我們呈現的範例抽獎，可以點擊這裡清楚所有資料重新開始',
-                        beforeAction(Element, TutorialNode, $next){
+                        beforeAction(Element, TutorialNode, $next) {
                             that.triggerModal({ key: 'Setting' });
                             setTimeout(() => {
                                 document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -334,7 +330,7 @@ export default {
                     {
                         title: '開放想法',
                         intro: '當然你也可以不用抽人，不侷限讓抽獎更多變化，一場有趣的抽獎活動就由你來建立。',
-                        beforeAction(Element, TutorialNode, $next){
+                        beforeAction(Element, TutorialNode, $next) {
                             that.triggerModal({ key: 'Setting', close: false });
                             setTimeout(() => {
                                 $next();
@@ -346,24 +342,24 @@ export default {
                 tutorial1.run();
             }
         },
-        triggerTutorial(){
+        triggerTutorial() {
             const that = this;
             const config = {
                 offset: {
                     top: 60,
                     bottom: 60,
                 },
-                startCallback(){
+                startCallback() {
                     that.setIsTutorial(true);
                     trackJS.mixpanel('TutorialStart_trigger', { type: 'Tutorial' });
                     trackJS.gtag('event', 'TutorialStart_trigger', { type: 'Tutorial' });
                 },
-                closeCallback(){
+                closeCallback() {
                     that.setIsTutorial(false);
                     trackJS.mixpanel('TutorialEnd_trigger', { type: 'Tutorial' });
                     trackJS.gtag('event', 'TutorialEnd_trigger', { type: 'Tutorial' });
                 },
-                step_callback(node, IntroInfo){
+                step_callback(node, IntroInfo) {
                     trackJS.mixpanel('TutorialStep_trigger', { type: 'Tutorial', index: IntroInfo.index });
                     trackJS.gtag('event', 'TutorialStep_trigger', { type: 'Tutorial', index: IntroInfo.index });
                 },
@@ -409,14 +405,14 @@ export default {
                     target: '.navbar .navbar-nav .nav-item .nav-link[rel="CandidateList"]',
                     title: '候選名單',
                     intro: '來這裡建立一批候選名單吧！',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').addClass('show');
                         that.triggerModal({ key: 'CandidateList', close: false });
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').removeClass('show');
                         setTimeout(() => {
                             $next();
@@ -427,21 +423,21 @@ export default {
                     target: '#CandidateListBox textarea[name="candidateListTextarea"]',
                     title: '輸入候選名單',
                     intro: '來這裡建立一批候選名單吧！<br>一行一個候選人，您可以輸入他的姓名與職稱（非必填）',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').removeClass('show');
                         that.triggerModal({ key: 'CandidateList' });
                         setTimeout(() => {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                     },
                 },
                 {
                     target: '#CandidateListBox textarea[name="candidateListTextarea"]',
                     title: '輸入候選名單',
                     intro: '就像這樣',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             let candidateList = [];
                             for (let i = 0; i < string.randRange(10, 15); i += 1) {
@@ -453,19 +449,19 @@ export default {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                     },
                 },
                 {
                     target: '#CandidateListBox .btn-primary',
                     title: '存起來吧',
                     intro: '既然寫好了存起來試試看',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#CandidateListBox .btn-primary').trigger('click');
                         setTimeout(() => {
                             $next();
@@ -476,7 +472,7 @@ export default {
                     target: '.shortlist-box',
                     title: '候選名單',
                     intro: '候選名單建立好了，這些就是即將要被抽選的對象',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 100);
@@ -491,14 +487,14 @@ export default {
                     target: '.navbar .navbar-nav .nav-item .nav-link[rel="PrizeList"]',
                     title: '獎項名單',
                     intro: '你的活動想抽什麼都可以在這邊建立',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').addClass('show');
                         that.triggerModal({ key: 'PrizeList', close: false });
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').removeClass('show');
                         setTimeout(() => {
                             $next();
@@ -510,7 +506,7 @@ export default {
                     title: '獎項名單',
                     intro: '需要建立一筆獎項資訊，除了獎項名稱外也可以設定此獎項的數量。',
                     scrollTarget: '#PrizeListBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').removeClass('show');
                         document.querySelector('#PrizeListBox').scroll({ top: 0 });
                         that.triggerModal({ key: 'PrizeList' });
@@ -529,7 +525,7 @@ export default {
                     title: '獎項名單',
                     intro: '我來示範一次',
                     scrollTarget: '#PrizeListBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         document.querySelector('#PrizeListBox').scroll({ top: 0 });
                         const input = {
                             title: getRandomPrize(),
@@ -544,7 +540,7 @@ export default {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#PrizeListBox #AddPrizeGroup .input-group-text').trigger('click');
                         setTimeout(() => {
                             $next();
@@ -556,13 +552,13 @@ export default {
                     title: '獎項名單',
                     intro: '你可以透過這個拖拉調整順序',
                     scrollTarget: '#PrizeListBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         document.querySelector('#PrizeListBox').scroll({ top: 0 });
                         setTimeout(() => {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 10);
@@ -573,13 +569,13 @@ export default {
                     title: '獎項名單',
                     intro: '如果你還有其他獎項，可以點擊這邊再新增',
                     scrollTarget: '#PrizeListBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         document.querySelector('#PrizeListBox').scroll({ top: 0 });
                         setTimeout(() => {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'PrizeList', close: true });
                         setTimeout(() => {
                             $next();
@@ -590,12 +586,12 @@ export default {
                     target: '',
                     title: '刺激的來了',
                     intro: '候選項目跟獎項都設定好了，當然接下來是重頭戲抽獎！',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 10);
@@ -605,14 +601,14 @@ export default {
                     target: '.navbar .navbar-nav .nav-item .nav-link[rel="GetLucky"]',
                     title: '該要抽獎',
                     intro: '點擊這邊選擇你的抽獎項目',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').addClass('show');
                         that.triggerModal({ key: 'GetLucky', close: false });
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').removeClass('show');
                         setTimeout(() => {
                             $next();
@@ -624,13 +620,13 @@ export default {
                     title: '選一個',
                     intro: '這裡是所有獎項的列表，包含了可抽數量與已抽數量',
                     scrollTarget: '#GetLuckyBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'GetLucky' });
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 10);
@@ -641,14 +637,14 @@ export default {
                     title: '選一個',
                     intro: '我們選這個來抽獎吧，用力抽下去',
                     scrollTarget: '#GetLuckyBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'GetLucky' });
                         document.querySelector('#GetLuckyBox').scroll({ top: 0 });
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#GetLuckyBox .get-lucky-list .prizeInfo').trigger('click');
                         setTimeout(() => {
                             $next();
@@ -659,12 +655,12 @@ export default {
                     target: '.shortlist',
                     title: '抽獎中',
                     intro: '動畫呈現抽獎情況，隨機選擇保證公平',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    waitToNextAction(Element, $next){
+                    waitToNextAction(Element, $next) {
                         that.waitToNextActionTimer = null;
                         that.waitToNextActionTimer = setInterval(() => {
                             if ($('#LuckyBox').is(':visible')) {
@@ -679,7 +675,7 @@ export default {
                     title: '抽中了！',
                     intro: '這裡呈現被抽中的候選人與中獎資訊',
                     scrollTarget: '#LuckyBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         document.querySelector('#LuckyBox').scroll({ top: 0 });
                         setTimeout(() => {
                             $next();
@@ -691,7 +687,7 @@ export default {
                     title: '人不在',
                     intro: '抽到歸抽到，這人卻不在現場怎麼辦，點擊這裡取消這次抽獎',
                     scrollTarget: '#LuckyBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         document.querySelector('#LuckyBox').scroll({ top: 0 });
                         setTimeout(() => {
                             $next();
@@ -703,13 +699,13 @@ export default {
                     title: '天選之人！',
                     intro: '確定就是這人了，把這候選人儲存起來！',
                     scrollTarget: '#LuckyBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         document.querySelector('#LuckyBox').scroll({ top: 0 });
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#LuckyBox .save').trigger('click');
                         setTimeout(() => {
                             $next();
@@ -725,14 +721,14 @@ export default {
                     target: '.navbar .navbar-nav .nav-item .nav-link[rel="Result"]',
                     title: '抽獎結果',
                     intro: '很難統計抽獎結果嗎？點擊這裡來看抽獎結果',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').addClass('show');
                         that.triggerModal({ key: 'Result', close: false });
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').removeClass('show');
                         setTimeout(() => {
                             $next();
@@ -744,14 +740,14 @@ export default {
                     title: '中獎人',
                     intro: '這裡可以呈現中獎人資訊與得獎資訊！',
                     scrollTarget: '#ResultBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'Result' });
                         setTimeout(() => {
                             document.querySelector('#ResultBox').scroll({ top: 0 });
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 10);
@@ -762,13 +758,13 @@ export default {
                     title: '下載',
                     intro: '中獎人太多不好管理，那就下載成為檔案吧！',
                     scrollTarget: '#ResultBox',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         document.querySelector('#ResultBox').scroll({ top: 0 });
                         setTimeout(() => {
                             $next();
                         }, 100);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'Result', close: true });
                         setTimeout(() => {
                             $next();
@@ -778,7 +774,7 @@ export default {
                 {
                     title: '接近尾聲',
                     intro: 'Lucky Draw 抽獎機的介紹也到了尾聲了，很開心你看到這邊。啊！突然想到似乎還有一些事情沒介紹',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         setTimeout(() => {
                             $next();
                         }, 100);
@@ -788,13 +784,13 @@ export default {
                     target: '.nav-link[rel="setting"]',
                     title: '你可以有你的風格',
                     intro: '在設定裡面可以設定屬於你的風格，接下來跟你介紹可以做得多客製化',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').addClass('show');
                         setTimeout(() => {
                             $next();
                         }, 10);
                     },
-                    afterAction(Element, TutorialNode, $next){
+                    afterAction(Element, TutorialNode, $next) {
                         $('#navbarCollapse').removeClass('show');
                         setTimeout(() => {
                             $next();
@@ -806,7 +802,7 @@ export default {
                     scrollTarget: '#SettingBox',
                     title: '候選區塊不滿意',
                     intro: '您可以在這邊設定區塊的寬高與間距',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'Setting' });
                         setTimeout(() => {
                             document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -819,7 +815,7 @@ export default {
                     scrollTarget: '#SettingBox',
                     title: '字太小嗎？',
                     intro: '人名與職稱都是文字大小都可以改',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         // that.triggerModal({ key: 'Setting' });
                         setTimeout(() => {
                             document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -832,7 +828,7 @@ export default {
                     scrollTarget: '#SettingBox',
                     title: '顏色太醜',
                     intro: '區塊總共有三種狀態，每種狀態都有自己的顏色，當然您可以自由設定',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         // that.triggerModal({ key: 'Setting' });
                         setTimeout(() => {
                             document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -845,7 +841,7 @@ export default {
                     scrollTarget: '#SettingBox',
                     title: '展示即將結束',
                     intro: '可以點擊這裡清楚所有資料重新開始',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'Setting' });
                         setTimeout(() => {
                             document.querySelector('#SettingBox').scroll({ top: 0 });
@@ -856,7 +852,7 @@ export default {
                 {
                     title: '開放想法',
                     intro: '當然你也可以不用抽人，不侷限讓抽獎更多變化，一場有趣的抽獎活動就由你來建立。',
-                    beforeAction(Element, TutorialNode, $next){
+                    beforeAction(Element, TutorialNode, $next) {
                         that.triggerModal({ key: 'Setting', close: false });
                         setTimeout(() => {
                             $next();
@@ -871,5 +867,4 @@ export default {
     },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

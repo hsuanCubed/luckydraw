@@ -2,6 +2,7 @@
 
 .navbar {
     user-select: none;
+
     .navbar-collapse {
         .nav-item {
             cursor: pointer;
@@ -13,15 +14,16 @@
     transition: all 0.01s;
 }
 
-.main-page{
-    padding-top: 60px;
+.main-page {
+    padding-top: 25vh;
+    min-height: 100vh;
 }
 
-.cursor-pointer{
+.cursor-pointer {
     cursor: pointer;
 }
 
-.bg-img{
+.bg-img {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -32,37 +34,41 @@
     background-size: cover;
 }
 
-.get-lucky-list{
-    &.disabled{
+.get-lucky-list {
+    &.disabled {
         filter: blur(2px) grayscale(1);
         pointer-events: none;
     }
 }
 
-.lucky-draw-choose-list{
-    .lucky-draw-choose-item{
+.lucky-draw-choose-list {
+    .lucky-draw-choose-item {
         display: flex;
         overflow: hidden;
         border-radius: variables.$spacer * 0.25;
         font-size: variables.$spacer * 1.25;
         user-select: none;
-        .lucky-draw-choose-text{
+
+        .lucky-draw-choose-text {
             flex: 1;
             padding: variables.$spacer * 0.75 variables.$spacer;
             background: variables.$blue-200;
             color: variables.$black;
             cursor: pointer;
-            &:active{
+
+            &:active {
                 background: variables.$blue-600;
             }
         }
-        .lucky-draw-choose-del{
+
+        .lucky-draw-choose-del {
             flex: none;
             padding: variables.$spacer * 0.75 variables.$spacer;
             background: variables.$blue-200;
             color: variables.$black;
             cursor: pointer;
-            &:active{
+
+            &:active {
                 background: variables.$blue-600;
             }
         }
@@ -104,7 +110,7 @@
 
                 .candidate-name {
                     font-weight: 600;
-                    overflow:hidden;
+                    overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     width: 100%;
@@ -113,7 +119,7 @@
                 .candidate-pos {
                     font-weight: 100;
                     font-size: 11px;
-                    overflow:hidden;
+                    overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     width: 100%;
@@ -133,34 +139,41 @@
                 opacity: 0.6;
                 transform: scale(0.9);
 
-                .candidate-wrapper {
-                }
+                .candidate-wrapper {}
             }
         }
     }
 }
 
-.shortlist-empty-box{
+.shortlist-empty-box {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 5px;
-    height: calc(100vh - 80px);
+    min-height: 200px;
     border-radius: 10px;
-    background: rgba( 100, 100, 100, 0.3);
+    background: rgba(100, 100, 100, 0.3);
     color: #222;
     text-align: center;
     font-weight: 900;
     font-size: 25px;
-    .shortlist-empty-info{
+
+    .shortlist-empty-info {
         max-height: 100%;
         overflow: auto;
+        // 讓清單本身置中
+        ol {
+            text-align: left;
+            display: inline-block;
+        }
     }
-    a{
+
+    a {
         border-bottom: 1px solid #222;
         color: #222;
-        &:hover{
+
+        &:hover {
             text-decoration: unset;
         }
     }
@@ -175,8 +188,8 @@
             justify-content: center;
             margin: variables.$spacer auto;
             padding: 5px 5px;
-            width: auto!important;
-            height: auto!important;
+            width: auto !important;
+            height: auto !important;
             border: 1px solid #ccc;
             border-radius: 4px;
             background: #fff;
@@ -187,21 +200,21 @@
 
             .candidate-name {
                 font-weight: 600;
-                overflow:hidden;
+                overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 width: 100%;
-                font-size: 30px!important;
+                font-size: 30px !important;
             }
 
             .candidate-pos {
                 font-weight: 100;
                 font-size: 11px;
-                overflow:hidden;
+                overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 width: 100%;
-                font-size: 20px!important;
+                font-size: 20px !important;
             }
         }
     }
@@ -243,10 +256,11 @@
     }
 }
 
-.google-support-box{
+.google-support-box {
     width: 100%;
     margin-bottom: variables.$spacer * 0.5;
-    .error{
+
+    .error {
         padding: 5px;
         background-color: rgba(variables.$orange-100, 0.3);
         font-size: 20px;
