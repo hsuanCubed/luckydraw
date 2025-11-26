@@ -92,33 +92,33 @@ export default {
         },
     },
     watch: {
-        triggerOpenLucky: {
-            handler() {
-                const that = this;
-                $(that.$refs.box).modal('show');
-            },
-        },
+        // triggerOpenLucky: {
+        //     handler() {
+        //         const that = this;
+        //         $(that.$refs.box).modal('show');
+        //     },
+        // },
     },
     created() { },
     mounted() {
-        const that = this;
-        $(that.$refs.box).bind('shown.bs.modal', () => {
-            /**
-             * 得獎 icon
-             */
-            that.setFavicon('award');
-            trackJS.mixpanel('LuckyOpen_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
-            trackJS.gtag('event', 'LuckyOpen_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
-        });
-        $(that.$refs.box).bind('hidden.bs.modal', () => {
-            /**
-             * default icon
-             */
-            that.setFavicon('default');
-            trackJS.mixpanel('LuckyClose_click');
-            trackJS.gtag('event', 'LuckyClose_click');
-        });
-        $(that.$refs.box).modal('show');
+        // const that = this;
+        // $(that.$refs.box).bind('shown.bs.modal', () => {
+        //     /**
+        //      * 得獎 icon
+        //      */
+        //     that.setFavicon('award');
+        //     trackJS.mixpanel('LuckyOpen_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
+        //     trackJS.gtag('event', 'LuckyOpen_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
+        // });
+        // $(that.$refs.box).bind('hidden.bs.modal', () => {
+        //     /**
+        //      * default icon
+        //      */
+        //     that.setFavicon('default');
+        //     trackJS.mixpanel('LuckyClose_click');
+        //     trackJS.gtag('event', 'LuckyClose_click');
+        // });
+        // $(that.$refs.box).modal('show');
     },
     updated() { },
     destroyed() { },

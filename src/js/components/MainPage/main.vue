@@ -5,14 +5,29 @@
         <main style="padding: 0px 10px">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-9 mx-auto mt-3">
-                    <div v-if="candidateList.length > 0" class="shortlist-box">
-                        <transition-group name="shortlist" class="shortlist" tag="div" enter-active-class="fadeInUp"
-                            leave-active-class="fadeOutDown">
-                            <candidate-box v-for="(candidateInfo, candidateIndex) in candidateListBySort"
-                                :key="candidateInfo.sn" :candidate-index="candidateIndex"
-                                :candidate-info="candidateInfo"></candidate-box>
-                        </transition-group>
-                    </div>
+                    <template v-if="candidateList.length > 0">
+                        <div v-if="hasDrawnWinner" class="lucky-result-display">
+                            <div class="text-center p-4 lucky-info">
+                                <template v-if="winnerCandidateList.length > 0">
+                                    <div class="winner-list-container d-flex flex-wrap justify-content-center">
+                                        <candidate-box v-for="(winnerInfo, index) in winnerCandidateList"
+                                            :key="winnerInfo.sn" :candidate-index="index"
+                                            :candidate-info="winnerInfo"></candidate-box>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    無法對應
+                                </template>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-4">
+                                <button type="button" class="btn btn-primary save mx-2" @click="saveLuckyResult">
+                                    確定
+                                </button>
+                            </div>
+
+                        </div>
+                    </template>
                     <template v-else>
                         <div class="shortlist-empty-box">
                             <div class="shortlist-empty-info text-left">
@@ -82,12 +97,38 @@ export default {
             'candidateList_sort',
 
             'prizeList',
+            'focusPrizeSN',
+            'focusCandidateSN', // 中獎 SN 列表
+            'candidateMapping', // 候選人映射
+            'prizeMapping',     // 獎項映射
 
 
             'randomCandidateNames',
             'randomCandidatePos',
             'randomPrize',
         ]),
+
+        // 判斷是否顯示結果區塊 (當抽獎結束，且有中獎 SN 列表時)
+        hasDrawnWinner() {
+            // 當 luckyDrawFocusKey 不為空，且抽獎計時器已歸零 (假設抽獎結束)
+            // 由於 startLuckyDrawProcess 結束時會呼叫 commit('setFocusCandidateSN', winnerList)，
+            // 這裡只需檢查 focusCandidateSN 是否為陣列且有內容即可。
+            return Array.isArray(this.focusCandidateSN) && this.focusCandidateSN.length > 0;
+        },
+
+        // 複製 LuckyBox 的 winnerCandidateList 邏輯
+        winnerCandidateList() {
+            const sns = this.focusCandidateSN;
+            if (!Array.isArray(sns) || sns.length === 0) {
+                return [];
+            }
+            return sns.map(sn => this.candidateMapping[sn]).filter(c => c);
+        },
+
+        // 複製 LuckyBox 的 focusPrizeInfo 邏輯
+        focusPrizeInfo() {
+            return this.prizeMapping[this.focusPrizeSN] || { title: 'N/A' };
+        },
     },
     watch: {
         config: {
@@ -168,6 +209,7 @@ export default {
 
             setIsTutorial: 'setIsTutorial',
         }),
+        ...mapMutations(['setFocusCandidateBindPrize', 'setLuckyDrawFocusKey']),
         init() {
             const that = this;
             that.setFavicon('default');
@@ -203,7 +245,7 @@ export default {
          */
         enterToLuckyDraw(event) {
             const that = this;
-            
+
             // 檢查是否為 Enter 鍵
             if (event.key === 'Enter' || event.keyCode === 13) {
                 console.log('Enter key detected!');
@@ -233,6 +275,28 @@ export default {
                     console.log('Conditions NOT met.');
                 }
             }
+        },
+        // 確定中獎結果 (複製自 LuckyBox 的 save 函式)
+        saveLuckyResult() {
+            const that = this;
+            const params = {
+                prize_sn: that.focusPrizeSN,
+                candidate_sn_list: that.focusCandidateSN,
+            };
+
+            // 執行綁定中獎結果的 Mutation
+            that.setFocusCandidateBindPrize(params);
+
+            trackJS.mixpanel('LuckyConfirm_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
+            trackJS.gtag('event', 'LuckyConfirm_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
+        },
+
+        // 取消中獎結果 (複製自 LuckyBox 的 cancel 函式)
+        cancelLuckyResult() {
+            const that = this;
+
+            trackJS.mixpanel('LuckyCancel_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
+            trackJS.gtag('event', 'LuckyCancel_click', { candidate_list: that.winnerCandidateList, prize: that.focusPrizeInfo });
         },
         createRandomLuckyDrawAct() {
             const that = this;

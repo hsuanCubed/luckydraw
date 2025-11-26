@@ -110,12 +110,6 @@ export const startLuckyDrawProcess = ({ commit, state }) => {
                 commit('setFocusCandidateSN', state.luckyDrawWinnerCandidateSNList);
                 commit('setFocusPrizeSN', state.luckyDrawFocusKey);
 
-                // 顯示結果 Modal
-                commit('triggerModal', { key: 'Lucky' });
-
-                // 重設狀態，準備下一次抽獎
-                commit('setLuckyDrawFocusKey', '');
-
                 // audio.winner[index].play();
 
             }, 600);
