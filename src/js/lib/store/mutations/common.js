@@ -480,6 +480,26 @@ export default {
     },
 
     /**
+     * 啟動抽獎
+     */
+    setTriggerLuckyDraw(state, status) {
+        state.triggerLuckyDraw = status;
+    },
+    setLuckyDrawFocusKey(state, sn) {
+        state.luckyDrawFocusKey = sn;
+    },
+    setLuckyDrawRunTime(state, time) {
+        state.luckyDrawRunTime = time;
+    },
+    setLuckyDrawOrgRunTime(state, time) {
+        state.luckyDrawOrgRunTime = time;
+    },
+    setLuckyDrawCandidateSNs(state, { validateList, winnerList }) {
+        state.luckyDrawValidateCandidateSN = validateList;
+        state.luckyDrawWinnerCandidateSNList = winnerList;
+    },
+
+    /**
      * 隨機建立抽獎資訊
      */
     createRandomLuckyDraw(state) {

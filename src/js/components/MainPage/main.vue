@@ -73,6 +73,7 @@ export default {
     computed: {
         ...mapGetters([
             'luckyDrawFocusKey',
+            'triggerOpenGetLucky',
             'luckyDrawIsRandom',
             'config',
 
@@ -141,11 +142,20 @@ export default {
     mounted() {
         const that = this;
         that.init();
+        /** 監聽 Enter 鍵開始抽獎 */
+        document.addEventListener('keyup', that.enterToLuckyDraw);
     },
     updated() { },
-    destroyed() { },
+    destroyed() {
+        // 在組件銷毀時移除事件監聽
+        const that = this;
+        document.removeEventListener('keyup', that.enterToLuckyDraw);
+    },
     methods: {
-        ...mapActions({}),
+        ...mapActions({
+            // 假設這個 Action 負責啟動實際的滾動抽獎邏輯
+            triggerLuckyDrawProcess: 'triggerLuckyDrawProcess', // 確保這個 Action 名稱與您的 Vuex Actions 匹配
+        }),
         ...mapMutations({
             setFavicon: 'setFavicon',
             initSystem: 'initSystem',
@@ -187,6 +197,42 @@ export default {
         editCandidateList() {
             const that = this;
             that.triggerModal({ key: 'CandidateList' });
+        },
+        /**
+         * 監聽鍵盤 Enter 鍵，如果已選定抽獎項目，則啟動抽獎
+         */
+        enterToLuckyDraw(event) {
+            const that = this;
+            
+            // 檢查是否為 Enter 鍵
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                console.log('Enter key detected!');
+
+                console.log('FocusKey:', that.luckyDrawFocusKey);
+                console.log('IsRandom:', that.luckyDrawIsRandom);
+                console.log('ModalOpen:', that.triggerOpenGetLucky);
+                // 檢查條件：
+                // 1. 已選定 focus key (非隨機模式) 或 2. 為隨機模式
+                // 3. GetLuckyBox Modal 必須已關閉 (以免在 Modal 中誤觸)
+                const isReadyToDraw = (that.luckyDrawFocusKey !== '' || that.luckyDrawIsRandom) &&
+                    that.triggerOpenGetLucky === false;
+
+                if (isReadyToDraw) {
+                    console.log('Conditions met. Starting Draw Process...'); // 👈 新增此行
+                    event.preventDefault();
+                    that.triggerLuckyDrawProcess(); // 或是您實際呼叫的抽獎方法名
+
+                    // 🎯 檢查抽獎方法是否真的存在
+                    if (typeof that.triggerLuckyDrawProcess === 'function') {
+                        console.log('Function exists and was called.'); // 👈 新增此行
+                    } else {
+                        console.error('triggerLuckyDrawProcess function is MISSING or undefined!'); // 👈 新增此行
+                    }
+
+                } else {
+                    console.log('Conditions NOT met.');
+                }
+            }
         },
         createRandomLuckyDrawAct() {
             const that = this;

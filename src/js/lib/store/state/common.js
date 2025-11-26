@@ -10,6 +10,10 @@ export default {
      * 正在看的 LuckyDraw
      */
     luckyDrawFocusKey: false,
+    luckyDrawRunTime: 0,
+    luckyDrawOrgRunTime: 0,
+    luckyDrawValidateCandidateSN: [],
+    luckyDrawWinnerCandidateSNList: [],
 
     /**
      * 目前的 luckyDraw 是亂數產生
@@ -171,6 +175,11 @@ export default {
      * 開啟資料轉換
      */
     triggerOpenUpgradeData: null,
+    
+    /**
+     * 用於控制從 MainPage 啟動抽獎
+     */
+    triggerLuckyDraw: false,
 
     /**
      * 亂數

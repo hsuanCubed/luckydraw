@@ -34,14 +34,17 @@
                                             class="form-control" placeholder="編輯獎項名稱"
                                         >
                                         <input v-model.number="editPrizeInfo.amount" type="number"
-                                            class="form-control" placeholder="總數量"
-                                            min="1"
-                                            step="1"
+                                        class="form-control" placeholder="總數量"
+                                        min="1"
+                                        step="1"
                                         >
                                         <input v-model.number="editPrizeInfo.drawCount" type="number"
-                                            class="form-control" placeholder="每次抽幾人"
-                                            min="1"
-                                            step="1"
+                                        class="form-control" placeholder="每次抽幾人"
+                                        min="1"
+                                        step="1"
+                                        >
+                                        <input v-model="editPrizeInfo.bgPic" type="text"
+                                            class="form-control" placeholder="背景圖"
                                         >
                                         <div class="input-group-append">
                                             <span class="input-group-text btn-success" style="cursor: pointer" @click="saveEditPrizeAct">
@@ -105,6 +108,12 @@
                                 min="1"
                                 step="1"
                             >
+                            <input v-model="newPrize.bgPic"
+                                name="title"
+                                type="text"
+                                class="form-control"
+                                placeholder="新增的背景圖"
+                            >
                             <div class="input-group-append">
                                 <span class="input-group-text" style="cursor: pointer" @click="saveNewPrizeAct">
                                     <i class="far fa-save"></i>
@@ -136,6 +145,7 @@ export default {
                 title: '',
                 amount: 1,
                 drawCount: 1,
+                bgPic: '',
             },
             inputPrizeList: [],
             editPrizeInfo: null,
@@ -191,6 +201,7 @@ export default {
                 title: '',
                 amount: 1,
                 drawCount: 1,
+                bgPic: '',
             };
 
             if (that.inputPrizeList.length === 0) {
@@ -226,6 +237,7 @@ export default {
                 title: '',
                 amount: 1,
                 drawCount: 1,
+                bgPic: '',
             };
             that.addNewFlag = true;
         },
@@ -241,6 +253,7 @@ export default {
                         title: '獎勵',
                         amount: 1,
                         drawCount: 1,
+                        bgPic: '背景圖',
                         del: false,
                         ...that.newPrize,
                     };
