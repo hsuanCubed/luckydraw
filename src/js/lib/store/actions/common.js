@@ -40,7 +40,7 @@ export const prepareLuckyDraw = ({ commit, state }, prizeInfo) => {
             }
 
             // 3. 設定滾動開始時顯示的候選人 (通常是第一個中獎者)
-            commit('setFocusCandidateSN', winnersSN[0]);
+            commit('setFocusCandidateSN', "");
 
             // 成功準備後，回傳成功標誌，供 GetLuckyBox 關閉 Modal 使用
             return true;

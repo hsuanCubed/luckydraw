@@ -6,16 +6,17 @@
         <div class="candidate-wrapper" :style="{
             width: config.boxWidth + 'px',
             height: config.boxHeight + 'px',
-            margin: `${config.boxMV}px ${config.boxMH}px`,
-            background: boxColor
+            margin: `${config.boxMV}px ${config.boxMH}px`
         }">
             <div class="candidate-name" :style="{
-                'font-size': config.titleSize + 'px'
+                'font-size': config.titleSize + 'px',
+                'color': 'white'
             }">
                 {{ candidateInfo.name }}
             </div>
             <div class="candidate-pos" :style="{
-                'font-size': config.subtitleSize + 'px'
+                'font-size': config.subtitleSize + 'px',
+                'color': 'white'
             }">
                 {{ candidateInfo.pos }}
             </div>

@@ -69,7 +69,7 @@ export default {
     filters: {},
     props: {},
     data() {
-        return { };
+        return {};
     },
     computed: {
         ...mapGetters([
@@ -182,7 +182,7 @@ export default {
             $(this.$refs.box).modal('hide');
             that.triggerModal({ key: 'PrizeList' });
         },
-        async getLucky(prizeInfo) {
+        getLucky(prizeInfo) {
             const that = this;
             trackJS.mixpanel('GetLuckyChoosePrize_click', prizeInfo);
             trackJS.gtag('event', 'GetLuckyChoosePrize_click', prizeInfo);
@@ -197,7 +197,7 @@ export default {
                 // 準備失敗 (數量不足等)，Popup 警告訊息已在 prepareLuckyDraw Action 內處理 (或在組件內處理)
                 // 這裡不再需要多餘的錯誤處理，因為 prepareLuckyDraw 會返回 false
             }
-        },        
+        },
     },
 };
 </script>

@@ -15,8 +15,8 @@
                                             :candidate-info="winnerInfo"></candidate-box>
                                     </div>
                                 </template>
-                                <template v-else>
-                                    無法對應
+                                <template v-else >
+                                    XXX
                                 </template>
                             </div>
 

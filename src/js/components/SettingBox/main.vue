@@ -79,11 +79,11 @@
                             <div class="form-group">
                                 <label for="titleSize">標題大小 [{{ input.titleSize }} px]</label>
                                 <input v-model.number="input.titleSize" type="range" class="form-control" min="15"
-                                    max="25" name="titleSize">
+                                    max="40" name="titleSize">
                             </div>
                             <div class="form-group">
                                 <label for="subtitleSize">副標題大小 [{{ input.subtitleSize }} px]</label>
-                                <input v-model="input.subtitleSize" type="range" class="form-control" min="15" max="25"
+                                <input v-model="input.subtitleSize" type="range" class="form-control" min="15" max="40"
                                     name="subtitleSize">
                             </div>
                         </div>
